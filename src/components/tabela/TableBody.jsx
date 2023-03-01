@@ -1,21 +1,12 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useContext } from 'react';
 import ApiContext from '../../context/ApiContext';
 
 function TableBody() {
-  const [planetasRenderizados, setplanetasRenderizados] = useState([]);
   const contextInfo = useContext(ApiContext);
-  const { planetasApi, planetasFiltradosNome } = contextInfo;
-
-  useEffect(() => {
-    if (planetasFiltradosNome.length !== 0) {
-      setplanetasRenderizados(planetasFiltradosNome);
-    } else {
-      setplanetasRenderizados(planetasApi);
-    }
-  }, [planetasApi, planetasFiltradosNome]);
+  const { planetasFiltrados } = contextInfo;
 
   return (
-    planetasRenderizados.map((planeta) => (
+    planetasFiltrados.map((planeta) => (
       <tr key={ planeta.name }>
         <td>{planeta.name}</td>
         <td>{planeta.rotation_period}</td>
