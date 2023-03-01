@@ -6,33 +6,19 @@ import TableHeader from './TableHeader';
 function Table() {
   const [carregando, setCarregando] = useState(true);
   const [planetas, setPlanetas] = useState([]);
-  // const [chaves, setChaves] = useState([]);
-  const contextInfo = useContext(ApiContext); // pego os dados da API que estão salvos no "estado global"
-  console.log(contextInfo);
-  const { planetasAPI } = contextInfo;
-
-  // useEffect(() => {
-  // deu erro no lint pedindo desestruturação do planetasAPI.length
-  //   if (planetasAPI.length !== 0) {
-  //     setCarregando(false);
-  //   } else setCarregando(true);
-  // }, [planetasAPI, carregando]);
-
-  // useEffect(() => {
-  //   setPlanetas(planetasAPI);
-  //   if (planetas.length !== 0) {
-  //     setCarregando(false);
-  //     const chavesDaAPI = Object.keys(planetas[0]);
-  //     setChaves(chavesDaAPI);
-  //   } else setCarregando(true);
-  // }, [planetasAPI, planetas, carregando]);
+  // const [chaves, setChaves] = useState([]); // usado quando renderizo toda da tabela aqui
+  const contextInfo = useContext(ApiContext); // pego os dados que estão salvos no "estado global" do provider
+  // console.log(contextInfo);
+  const { planetasApi } = contextInfo;
+  // console.log(planetasApi);
 
   useEffect(() => {
-    // setPlanetas(planetasAPI);
-    if (planetasAPI.length !== 0) {
+    // console.log('chamada no useEffect', planetasApi);
+    if (planetasApi.length !== 0) {
       setCarregando(false);
+      setPlanetas(planetasApi);
     } else setCarregando(true);
-  }, [planetasAPI]);
+  }, [planetasApi]);
 
   // return (
   //   carregando ? (
@@ -72,7 +58,7 @@ function Table() {
     ) : (
       <table>
         <thead>
-          <TableHeader planetas={ planetas } />
+          <TableHeader />
         </thead>
         <tbody>
           <TableBody planetas={ planetas } />

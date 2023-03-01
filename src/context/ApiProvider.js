@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import ApiContext from './ApiContext';
 
@@ -6,8 +6,8 @@ import ApiContext from './ApiContext';
 //   const { children } = props;
 function ApiProvider({ children }) {
   const [planetasApi, setPlanetasApi] = useState([]);
-  const [planetasFiltrados, setPlanetasFiltradosNome] = useState([]);
-  const [value, setValue] = useState('');
+  const [planetasFiltradosNome, setPlanetasFiltradosNome] = useState([]);
+  const [valueName, setValueName] = useState('');
 
   useEffect(() => {
     const URL = 'https://swapi.dev/api/planets';
@@ -19,63 +19,39 @@ function ApiProvider({ children }) {
           delete result.residents;
           return result;
         });
-        console.log(apiSemResidents);
+        // console.log(apiSemResidents);
         setPlanetasApi(apiSemResidents);
-        console.log(planetasApi);
+        // console.log('estado logo depois do fetch', planetasApi);
       });
-  }, [planetasApi]);
+  }, []);
 
-  // useEffect(() => {
-  //   const URL = 'https://swapi.dev/api/planets';
-  //   const fetchData = async () => {
-  //     const response = await fetch(URL);
-  //     const data = await response.json();
-  //     // console.log(data.results); // retorna um array de objetos
-  //     const apiSemResidents = data.results.map((result) => {
-  //       delete result.residents;
-  //       return result;
-  //     });
-  //     console.log(apiSemResidents);
-  //     setPlanetasApi(apiSemResidents);
-  //     console.log(planetasApi);
-  //   };
-  //   fetchData();
-  // }, [planetasApi]);
+  // console.log('estado depois do fetch', planetasApi);
 
-  // const filtraPlanetas = (valor) => planetasApi
-  //   .filter((planeta) => planeta.name.toLowerCase()
-  //     .includes(valor));
-
-  // const handleChange = (event) => {
-  //   setValue(event.target.value.toLowerCase());
-  //   if (planetasApi.length > 0) {
-  //     const filtrados = filtraPlanetas(value);
-  //     console.log(filtrados);
-  //     setPlanetasFiltradosNome(filtrados);
-  //   }
-  // };
-
+  // função que efetivamente executa o filtro dos planetas por nome
   const filtraPlanetas = useCallback((valor) => planetasApi
     .filter((planeta) => planeta.name.toLowerCase()
       .includes(valor)), [planetasApi]);
 
-  const handleChange = useCallback((event) => {
-    setValue(event.target.value.toLowerCase());
-    if (planetasApi.length > 0) {
-      const filtrados = filtraPlanetas(value);
-      console.log(filtrados);
-      setPlanetasFiltradosNome(filtrados);
-    }
-  }, [filtraPlanetas, value, planetasApi]);
+  // useEffect para fazer com que o filtro só ocorra depois que o valueName esteja com o valor atualizado, do contrário, escrevo e só depois ele pega o filtro do que escrevi
+  useEffect(() => {
+    const filtrados = filtraPlanetas(valueName);
+    console.log('filtrados', filtrados);
+    console.log('valor', valueName);
+    setPlanetasFiltradosNome(filtrados);
+  }, [valueName, filtraPlanetas]);
 
-  console.log(planetasApi);
+  // função para pegar o valor do que é digitado no componente FiltroNome
+  const handleChange = useCallback((event) => {
+    // console.log(event.target.value);
+    setValueName(event.target.value.toLowerCase());
+  }, []);
 
   return (
     <ApiContext.Provider
       value={ {
-        planetas: planetasApi,
+        planetasApi,
         handleChange,
-        planetasFiltrados,
+        planetasFiltradosNome,
       } }
     >
       {children}

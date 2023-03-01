@@ -1,11 +1,21 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { useState, useEffect, useContext } from 'react';
+import ApiContext from '../../context/ApiContext';
 
-function TableBody(props) {
-  const { planetas } = props;
+function TableBody() {
+  const [planetasRenderizados, setplanetasRenderizados] = useState([]);
+  const contextInfo = useContext(ApiContext);
+  const { planetasApi, planetasFiltradosNome } = contextInfo;
+
+  useEffect(() => {
+    if (planetasFiltradosNome.length !== 0) {
+      setplanetasRenderizados(planetasFiltradosNome);
+    } else {
+      setplanetasRenderizados(planetasApi);
+    }
+  }, [planetasApi, planetasFiltradosNome]);
 
   return (
-    planetas.map((planeta) => (
+    planetasRenderizados.map((planeta) => (
       <tr key={ planeta.name }>
         <td>{planeta.name}</td>
         <td>{planeta.rotation_period}</td>
@@ -21,9 +31,5 @@ function TableBody(props) {
     ))
   );
 }
-
-TableBody.propTypes = {
-  planetas: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-};
 
 export default TableBody;

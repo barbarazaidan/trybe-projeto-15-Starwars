@@ -1,26 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
-// import ApiContext from '../context/ApiContext';
+import React, { useState, useEffect, useContext } from 'react';
+import ApiContext from '../../context/ApiContext';
 
-function TableHeader(props) {
+function TableHeader() {
   const [chaves, setChaves] = useState([]);
-  const { planetas } = props;
-  // console.log(planetas);
-
-  // SE USO COM O CONTEXT API, DÁ ERRO POR CONTA DO DELAY DA CHAMADA DO FETCH
-  //   const [planetas, setPlanetas] = useState([]);
-  //   const planetasAPI = useContext(ApiContext);
-
-  //   useEffect(() => {
-  //     setPlanetas(planetasAPI);
-  //     const chavesDaAPI = Object.keys(planetas[0]);
-  //     setChaves(chavesDaAPI);
-  //   }, [planetasAPI, planetas, chaves]);
+  const contextInfo = useContext(ApiContext); // pego os dados da API que estão salvos no "estado global"
+  // console.log(contextInfo);
+  const { planetasApi } = contextInfo;
+  // console.log(planetasApi);
 
   useEffect(() => {
-    const chavesDaAPI = Object.keys(planetas[0]);
+    const chavesDaAPI = Object.keys(planetasApi[0]);
     setChaves(chavesDaAPI);
-  }, [planetas]);
+  }, [planetasApi]);
 
   return (
     <tr>
@@ -30,9 +21,5 @@ function TableHeader(props) {
     </tr>
   );
 }
-
-TableHeader.propTypes = {
-  planetas: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-};
 
 export default TableHeader;
