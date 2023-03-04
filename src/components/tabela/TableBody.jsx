@@ -3,10 +3,10 @@ import ApiContext from '../../context/ApiContext';
 
 function TableBody() {
   const contextInfo = useContext(ApiContext);
-  const { planetasFiltrados } = contextInfo;
+  const { planetasFiltradosGeral } = contextInfo;
 
   return (
-    planetasFiltrados.map((planeta) => (
+    planetasFiltradosGeral.map((planeta) => (
       <tr key={ planeta.name }>
         <td>{planeta.name}</td>
         <td>{planeta.rotation_period}</td>

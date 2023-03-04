@@ -4,8 +4,15 @@ import ApiContext from '../../context/ApiContext';
 function FiltosNumericos() {
   const contextInfo = useContext(ApiContext);
   const {
-    handleChangeSelects, clickBotaoFiltrar, filtroColunas, filtrosSelecionados,
+    handleChangeSelects,
+    clickBotaoFiltrar,
+    filtroColunas,
+    filtrosAtuais,
+    arrayFiltrosSelecionados,
+    clickExcluirFiltro,
   } = contextInfo;
+
+  // console.log(arrayFiltrosSelecionados);
 
   return (
     <div>
@@ -15,6 +22,7 @@ function FiltosNumericos() {
           id="filtroColuna"
           name="coluna"
           data-testid="column-filter"
+          value={ filtrosAtuais.coluna }
           onChange={ handleChangeSelects }
         >
           {filtroColunas.map((coluna) => (
@@ -39,7 +47,7 @@ function FiltosNumericos() {
         <input
           type="number"
           name="numero"
-          value={ filtrosSelecionados.numero }
+          value={ filtrosAtuais.numero }
           data-testid="value-filter"
           onChange={ handleChangeSelects }
         />
@@ -51,6 +59,14 @@ function FiltosNumericos() {
       >
         Filtar
       </button>
+      {arrayFiltrosSelecionados.map((elemento) => (
+        <div key={ elemento.coluna } data-testid="filter">
+          <span>{elemento.coluna}</span>
+          <span>{elemento.operador}</span>
+          <span>{elemento.numero}</span>
+          <button type="button" onClick={ () => clickExcluirFiltro(elemento) }>X</button>
+        </div>
+      ))}
     </div>
   );
 }
