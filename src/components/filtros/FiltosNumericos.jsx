@@ -6,10 +6,11 @@ function FiltosNumericos() {
   const {
     handleChangeSelects,
     clickBotaoFiltrar,
-    filtroColunas,
+    filtroColunasDoDropdown,
     filtrosAtuais,
     arrayFiltrosSelecionados,
     clickExcluirFiltro,
+    clickExcluirTodosFiltros,
   } = contextInfo;
 
   // console.log(arrayFiltrosSelecionados);
@@ -25,7 +26,7 @@ function FiltosNumericos() {
           value={ filtrosAtuais.coluna }
           onChange={ handleChangeSelects }
         >
-          {filtroColunas.map((coluna) => (
+          {filtroColunasDoDropdown.map((coluna) => (
             <option key={ coluna } value={ coluna }>{coluna}</option>
           ))}
         </select>
@@ -57,7 +58,7 @@ function FiltosNumericos() {
         data-testid="button-filter"
         onClick={ () => clickBotaoFiltrar() }
       >
-        Filtar
+        Filtrar
       </button>
       {arrayFiltrosSelecionados.map((elemento) => (
         <div key={ elemento.coluna } data-testid="filter">
@@ -67,6 +68,13 @@ function FiltosNumericos() {
           <button type="button" onClick={ () => clickExcluirFiltro(elemento) }>X</button>
         </div>
       ))}
+      <button
+        type="button"
+        data-testid="button-remove-filters"
+        onClick={ clickExcluirTodosFiltros }
+      >
+        Remover todos os filtros
+      </button>
     </div>
   );
 }
