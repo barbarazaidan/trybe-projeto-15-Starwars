@@ -8,7 +8,8 @@ function ApiProvider({ children }) {
   const [planetasApi, setPlanetasApi] = useState([]); // planetas chamados da API sem a chave Residents
   const [nomeInput, setNomeInput] = useState([]); // valor digitado no input name
   const [planetasFiltradosNome, setPlanetasFiltradosNome] = useState([]); // resultado dos planetas filtrados pelo nome
-  const [filtroGeralDosPlanetas, setFiltroGeralDosPlanetas] = useState([]); // resultado dos filtros do nome e dos selects
+  const [planetasFiltradosDropdownNome, setPlanetasFiltradosDropdownNome] = useState([]); // resultado dos planetas filtrados pelo dropdown e pelo nome
+  const [filtroGeralDosPlanetas, setFiltroGeralDosPlanetas] = useState([]); // estado cujo resultado é igual ao dos planetasFiltradosDropdownNome, mas necessário para o processo de manipulação sem loops inifinitos, pois ele fica isolado
   const [filtroColunasDoDropdown, setFiltroColunasDoDropdown] = useState([ // filtros disponíveis no select da coluna
     'population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water',
   ]);
@@ -61,6 +62,7 @@ function ApiProvider({ children }) {
       .filter((planeta) => planeta.name.toLowerCase().includes(nomeInput));
     // console.log('filtradosNome', filtradosNome);
     setPlanetasFiltradosNome(filtradosNome);
+    setPlanetasFiltradosDropdownNome(filtradosNome);
   }, [nomeInput, planetasApi]);
 
   // --------------------------------------------------------------------------------------------------
@@ -82,81 +84,79 @@ function ApiProvider({ children }) {
     setFiltroColunasDoDropdown(filtrosAtualizados);
   };
 
-  // a função swicthParaFazerOFiltro é que efetivamente faz o filtro. Ela é chamada sempre que ArrayFiltrosSelecionados muda de valor, ou seja, na chamada do clickBotaoFiltrar e do clickExcluirFiltro e também no início do carregamento.
+  // a função swicthParaFazerOFiltro é que efetivamente faz o filtro. Ela retorna o array com os planetas filtrados e trabalha com o resultado salvo no planetasFiltradosDropdownNome
+  // o swicthParaFazerOFiltro, além das chamadas explícitas, também roda automaticamente quando uando escrevo algo no input nome, pois isso afeta os estados planetasFiltradosNome e planetasFiltradosDropdownNome, que estão no array de dependências
+  const swicthParaFazerOFiltro = useCallback((coluna, operador, numero) => {
+    let filtroPlanetasPorColuna = [];
+    console.log(planetasFiltradosDropdownNome, 'planetasFiltradosDropdownNome');
 
-  // aqui analiso cada linha da tabela. A cada uma delas, faço um forEach para iterar sobre o arrayFiltrosSelecionados e retorno um true ou false se a comparação for correta. Com o array de true e false finalizado, faço um every fora do forEach para verificar se todas as respostas são true.
-  const swicthParaFazerOFiltro = useCallback((linha) => {
-    console.log('arrayFiltrosSelecionados', arrayFiltrosSelecionados);
-    console.log('linha:', linha);
-    const contemplaOFiltro = [];
-    arrayFiltrosSelecionados.forEach(({ coluna, operador, numero }) => {
-      console.log('entrei no foreach');
-      switch (operador) {
-      case 'maior que': {
-        const resultado = (
-          linha[coluna] !== 'unknown' && Number(linha[coluna]) > Number(numero)
-        );
-        console.log(resultado);
-        contemplaOFiltro.push(resultado);
-      }
-        break;
-      case 'menor que': {
-        const resultado = (
-          linha[coluna] !== 'unknown' && Number(linha[coluna]) < Number(numero)
-        );
-        console.log(resultado);
-        contemplaOFiltro.push(resultado);
-      }
-        break;
-      case 'igual a': {
-        const resultado = (
-          linha[coluna] !== 'unknown' && Number(linha[coluna]) === Number(numero)
-        );
-          // console.log(resultado);
-        contemplaOFiltro.push(resultado);
-      }
-        break;
-      default: {
-        const resultado = true;
-        contemplaOFiltro.push(resultado);
-      }
-      } // termina o switch
-    }); // termina o forEach
-
-    console.log('contemplaOFiltro:', contemplaOFiltro);
-    const resultadoFinal = contemplaOFiltro.every((valor) => {
-      console.log('valor:', valor);
-      return valor; // o every sempre retorna true caso feito em um array vazio
-    });
-    console.log('não entrei no foreach');
-    console.log('resultadoFinal:', resultadoFinal);
-    return resultadoFinal;
-  }, [arrayFiltrosSelecionados]);
-
-  // depois que click nos botões, este useEffect ocorre e a função do swicthParaFazerOFiltro é executada; na sequência sai o resultado do filtrados e seto o valor do estado filtroGeralDosPlanetas
-  useEffect(() => {
-    // console.log('estou no useEffect depois do switch:');
-    const filtrados = planetasFiltradosNome.filter(swicthParaFazerOFiltro);
-    console.log('filtrados:', filtrados);
-    setFiltroGeralDosPlanetas(filtrados);
-  }, [planetasFiltradosNome, swicthParaFazerOFiltro]);
+    switch (operador) {
+    case 'maior que':
+      filtroPlanetasPorColuna = planetasFiltradosDropdownNome.filter((planeta) => (
+        // console.log(planeta);
+        // console.log(planeta[coluna]);
+        planeta[coluna] !== 'unknown' && Number(planeta[coluna]) > Number(numero)
+      ));
+      // console.log(filtroPlanetasPorColuna, 'filtroPlanetasPorColuna>');
+      break;
+    case 'menor que':
+      filtroPlanetasPorColuna = planetasFiltradosDropdownNome.filter((planeta) => (
+        planeta[coluna] !== 'unknown' && Number(planeta[coluna]) < Number(numero)
+      ));
+      // console.log(filtroPlanetasPorColuna, 'filtroPlanetasPorColuna<');
+      break;
+    case 'igual a':
+      filtroPlanetasPorColuna = planetasFiltradosDropdownNome.filter((planeta) => (
+        planeta[coluna] !== 'unknown' && Number(planeta[coluna]) === Number(numero)
+      ));
+      // console.log(filtroPlanetasPorColuna, 'filtroPlanetasPorColuna=');
+      break;
+    default:
+      filtroPlanetasPorColuna = planetasFiltradosNome;
+    }
+    // console.log(filtroPlanetasPorColuna, 'retorno do switch');
+    return filtroPlanetasPorColuna;
+  }, [planetasFiltradosDropdownNome, planetasFiltradosNome]);
 
   // função do click ao selecionar o filtro
   const clickBotaoFiltrar = () => {
-    const { coluna } = filtrosAtuais;
+    const { coluna, operador, numero } = filtrosAtuais;
     // atualiza o array com os novos objetos referentes a cada filtro selecionado
     setArrayFiltrosSelecionados([...arrayFiltrosSelecionados, filtrosAtuais]);
+    // chama o switch e salva o array retornado
+    const filtroPorColuna = swicthParaFazerOFiltro(coluna, operador, numero);
+    // console.log(filtroPorColuna);
+    // atualizo o estado com o valor retornado pelo switch
+    setPlanetasFiltradosDropdownNome(filtroPorColuna);
     removeFiltrosColunaDoDropdown(coluna);
   };
 
   // --------------------------------------------------------------------------------------------------
   // FUNÇÕES PARA LIDAR COM A EXLUSÃO DOS FILTROS
 
+  // aqui está a função para renderizar novamente a tabela depois de excluir os filtros individuais. Ela, entretanto, é chamada várias vezes (quando mudam os estados arrayFiltrosSelecionados e planetasFiltradosNome e quando a função swicthParaFazerOFiltro ocorre - que é sempre que o planetasFiltradosDropdownNome muda. Em resumo, ela é a gestora das demais funções.
+  // este useEffec vai verificar o tamanho do arrayFiltrosSelecionados, fazer um map switch (caso precise) e atualizar o estado FiltroGeralDosPlanetas
+  useEffect(() => {
+    let testando = [];
+    console.log(arrayFiltrosSelecionados, 'arrayFiltrosSelecionados do excluir');
+    if (arrayFiltrosSelecionados.length !== 0) {
+      arrayFiltrosSelecionados.forEach((elemento) => {
+        const { coluna, operador, numero } = elemento;
+        testando = swicthParaFazerOFiltro(coluna, operador, numero);
+        console.log(testando, 'linha 151');
+      });
+      setFiltroGeralDosPlanetas(testando);
+    } else {
+      setFiltroGeralDosPlanetas(planetasFiltradosNome);
+    }
+  }, [arrayFiltrosSelecionados, planetasFiltradosNome, swicthParaFazerOFiltro]);
+
   // função que coloca o nome da coluna de volta no dropdown
   const devolveFiltroAoDropdown = useCallback((coluna) => {
     const estadosIniciaisDropdown = [
       'population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water',
     ];
+
     const colunasAtuais = [...filtroColunasDoDropdown, coluna];
     // console.log(colunasAtuais);
 
@@ -164,8 +164,8 @@ function ApiProvider({ children }) {
     const estadoAtualizadoDropdown = estadosIniciaisDropdown
       .filter((estadoInicial) => colunasAtuais
         .some((colunaAtual) => colunaAtual === estadoInicial));
-    // console.log(estadoAtualizadoDropdown);
 
+    // console.log(estadoAtualizadoDropdown);
     setFiltroColunasDoDropdown(estadoAtualizadoDropdown); // ao atualizar o filtroColunasDoDropdown, o programa atualiza automaticamente o filtrosAtuais, que está no useEffect
   }, [filtroColunasDoDropdown]);
 
@@ -178,9 +178,12 @@ function ApiProvider({ children }) {
     devolveFiltroAoDropdown(filtros.coluna);
   };
 
+  useEffect(() => {});
+
   const clickExcluirFiltro = (elementos) => {
     // console.log(elementos);
     removeArrayFiltrosSelecionados(elementos);
+    setPlanetasFiltradosDropdownNome(planetasFiltradosNome); // o objetivo aqui é 'zerar' os planetas mantendo apenas os filtros do nome para aí refazer os filtros numéricos
   };
 
   const clickExcluirTodosFiltros = () => {
