@@ -25,7 +25,7 @@ function ApiProvider({ children }) {
     fetch(URL)
       .then((response) => response.json())
       .then((data) => {
-        // console.log(data.results); // retorna um array de objetos
+        // console.log(data);
         const apiSemResidents = data.results.map((result) => {
           delete result.residents;
           return result;
@@ -45,7 +45,7 @@ function ApiProvider({ children }) {
   // função genérica para pegar o valor do que é escolhido no componente FiltrosNumericos
   const handleChangeSelects = useCallback((event) => {
     const nome = event.target.name;
-    console.log(event.target.value);
+    // console.log(event.target.value);
     setfiltrosAtuais({
       ...filtrosAtuais,
       [nome]: event.target.value,
@@ -86,17 +86,17 @@ function ApiProvider({ children }) {
 
   // aqui analiso cada linha da tabela. A cada uma delas, faço um forEach para iterar sobre o arrayFiltrosSelecionados e retorno um true ou false se a comparação for correta. Com o array de true e false finalizado, faço um every fora do forEach para verificar se todas as respostas são true.
   const swicthParaFazerOFiltro = useCallback((linha) => {
-    console.log('arrayFiltrosSelecionados', arrayFiltrosSelecionados);
-    console.log('linha:', linha);
+    // console.log('arrayFiltrosSelecionados', arrayFiltrosSelecionados);
+    // console.log('linha:', linha);
     const contemplaOFiltro = [];
     arrayFiltrosSelecionados.forEach(({ coluna, operador, numero }) => {
-      console.log('entrei no foreach');
+      // console.log('entrei no foreach');
       switch (operador) {
       case 'maior que': {
         const resultado = (
           linha[coluna] !== 'unknown' && Number(linha[coluna]) > Number(numero)
         );
-        console.log(resultado);
+        // console.log(resultado);
         contemplaOFiltro.push(resultado);
       }
         break;
@@ -104,7 +104,7 @@ function ApiProvider({ children }) {
         const resultado = (
           linha[coluna] !== 'unknown' && Number(linha[coluna]) < Number(numero)
         );
-        console.log(resultado);
+        // console.log(resultado);
         contemplaOFiltro.push(resultado);
       }
         break;
@@ -123,13 +123,13 @@ function ApiProvider({ children }) {
       } // termina o switch
     }); // termina o forEach
 
-    console.log('contemplaOFiltro:', contemplaOFiltro);
+    // console.log('contemplaOFiltro:', contemplaOFiltro);
     const resultadoFinal = contemplaOFiltro.every((valor) => {
       console.log('valor:', valor);
       return valor; // o every sempre retorna true caso feito em um array vazio
     });
-    console.log('não entrei no foreach');
-    console.log('resultadoFinal:', resultadoFinal);
+    // console.log('não entrei no foreach');
+    // console.log('resultadoFinal:', resultadoFinal);
     return resultadoFinal;
   }, [arrayFiltrosSelecionados]);
 
@@ -137,7 +137,7 @@ function ApiProvider({ children }) {
   useEffect(() => {
     // console.log('estou no useEffect depois do switch:');
     const filtrados = planetasFiltradosNome.filter(swicthParaFazerOFiltro);
-    console.log('filtrados:', filtrados);
+    // console.log('filtrados:', filtrados);
     setFiltroGeralDosPlanetas(filtrados);
   }, [planetasFiltradosNome, swicthParaFazerOFiltro]);
 
