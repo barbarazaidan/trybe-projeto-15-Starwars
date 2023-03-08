@@ -136,22 +136,24 @@
 
 //   // aqui está a função para renderizar novamente a tabela depois de excluir os filtros individuais. Ela, entretanto, é chamada várias vezes (quando mudam os estados arrayFiltrosSelecionados e planetasFiltradosNome e quando a função swicthParaFazerOFiltro ocorre - que é sempre que o planetasFiltradosDropdownNome muda. Em resumo, ela é a gestora das demais funções.
 //   // este useEffec vai verificar o tamanho do arrayFiltrosSelecionados, fazer um map switch (caso precise) e atualizar o estado FiltroGeralDosPlanetas
-//   useEffect(() => {
+//   excluiFiltrosSim(() => {
 //     let testando = [];
 //     console.log(arrayFiltrosSelecionados, 'arrayFiltrosSelecionados do excluir');
 //     if (arrayFiltrosSelecionados.length !== 0) {
-//       arrayFiltrosSelecionados.forEach((elemento) => {
-//         const { coluna, operador, numero } = elemento;
-//         testando = swicthParaFazerOFiltro(coluna, operador, numero, testando);
-//         setPlanetasFiltradosDropdownNome(testando);
-//         console.log(testando, 'linha 151');
+//       arrayFiltrosSelecionados.reduce((array, filtros) => {
+//         const { coluna, operador, numero } = filtros;
+//         array = swicthParaFazerOFiltro(coluna, operador, numero);
+//         // setPlanetasFiltradosDropdownNome(testando);
+//         console.log(array, 'linha 147');
+
+//         return 'olá';
 //       });
 //       setFiltroGeralDosPlanetas(testando);
 //     } else {
 //       setFiltroGeralDosPlanetas(planetasFiltradosNome);
 //     }
 //     console.log(testando);
-//   }, [arrayFiltrosSelecionados, planetasFiltradosNome]);
+//   });
 
 //   // função que coloca o nome da coluna de volta no dropdown
 //   const devolveFiltroAoDropdown = useCallback((coluna) => {
@@ -184,7 +186,8 @@
 //     // console.log(elementos);
 //     removeArrayFiltrosSelecionados(elementos);
 //     setPlanetasFiltradosDropdownNome(planetasFiltradosNome); // o objetivo aqui é 'zerar' os planetas mantendo apenas os filtros do nome para aí refazer os filtros numéricos
-//   };
+//     excluiFiltrosSim();
+// };
 
 //   const clickExcluirTodosFiltros = () => {
 //     setFiltroColunasDoDropdown([

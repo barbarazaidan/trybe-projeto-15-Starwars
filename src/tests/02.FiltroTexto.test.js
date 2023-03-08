@@ -11,14 +11,14 @@ describe('Testa o filtro do input de texto', () => {
     });
   });
 
-  it.only('Verifica se o campo input name está presente na tela', () => {
+  it('Verifica se o campo input name está presente na tela', () => {
     render(<App />);
     const inputname = screen.getByTestId('name-filter');
 
     expect(inputname).toBeInTheDocument();
   });
 
-  it.only('Ao digitar Bespin, a tabela renderiza apenas esse planeta', async () => {
+  it('Verifica se digitar Bespin, a tabela renderiza apenas esse planeta', async () => {
     render(<App />);
 
     const inputname = screen.getByTestId('name-filter');
@@ -31,12 +31,3 @@ describe('Testa o filtro do input de texto', () => {
     expect(Tatooine).not.toBeInTheDocument();
   });
 });
-
-//   it('Testa', () => {
-//     'teste aqui'
-//   });
-
-//   it('Testa', () => {
-//     'teste aqui'
-//   });
-// });
