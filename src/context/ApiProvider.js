@@ -190,8 +190,6 @@ function ApiProvider({ children }) {
     setArrayFiltrosSelecionados([]);
   };
 
-  // --------------------------------------------------------------------------------------------------
-
   return (
     <ApiContext.Provider
       value={ {
@@ -205,6 +203,7 @@ function ApiProvider({ children }) {
         filtrosAtuais,
         arrayFiltrosSelecionados,
         filtroGeralDosPlanetas,
+        setFiltroGeralDosPlanetas,
       } }
     >
       {children}

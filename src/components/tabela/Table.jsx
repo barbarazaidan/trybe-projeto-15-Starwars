@@ -5,7 +5,6 @@ import TableHeader from './TableHeader';
 
 function Table() {
   const [carregando, setCarregando] = useState(true);
-  const [planetas, setPlanetas] = useState([]);
   // const [chaves, setChaves] = useState([]); // usado quando renderizo toda da tabela aqui
   const contextInfo = useContext(ApiContext); // pego os dados que estão salvos no "estado global" do provider
   // console.log(contextInfo);
@@ -16,7 +15,6 @@ function Table() {
     // console.log('chamada no useEffect', planetasApi);
     if (planetasApi.length !== 0) {
       setCarregando(false);
-      setPlanetas(planetasApi);
     } else setCarregando(true);
   }, [planetasApi]);
 
@@ -61,7 +59,7 @@ function Table() {
           <TableHeader />
         </thead>
         <tbody>
-          <TableBody planetas={ planetas } />
+          <TableBody />
         </tbody>
       </table>
     )
