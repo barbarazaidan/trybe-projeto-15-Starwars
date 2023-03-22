@@ -4,7 +4,7 @@ import ApiContext from '../../context/ApiContext';
 function TableBody() {
   const contextInfo = useContext(ApiContext);
   const { filtroGeralDosPlanetas } = contextInfo;
-  console.log(filtroGeralDosPlanetas);
+  // console.log(filtroGeralDosPlanetas);
 
   return (
     filtroGeralDosPlanetas.map((planeta) => (

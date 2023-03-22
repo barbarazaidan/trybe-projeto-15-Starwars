@@ -107,32 +107,49 @@ describe('Testa os filtros numéricos', () => {
     // estou usando os filtros population maior que 0
     const {debug} = render(<App />);
 
-    const selectColuna = screen.getByTestId('column-filter');
-    const selectOperador = screen.getByTestId('comparison-filter');
-    const inputNumber = screen.getByTestId('value-filter');
     const btnFilter = screen.getByRole('button', {name: 'Filtrar'} );
 
-    debug();
-    expect(screen.queryByRole('option', {name: 'population'})).toBeInTheDocument()
-    expect(screen.queryByRole('option', {name: 'orbital_period'})).toBeInTheDocument()
+    expect(screen.getAllByRole('option', {name: 'population'}).length).toBe(2)
+    expect(screen.getAllByRole('option', {name: 'orbital_period'}).length).toBe(2)
     
     userEvent.click(btnFilter);
-    expect(screen.queryByRole('option', {name: 'population'})).not.toBeInTheDocument()
-    expect(screen.queryByRole('option', {name: 'orbital_period'})).toBeInTheDocument()
+       
+    expect(screen.getAllByRole('option', {name: 'population'}).length).toBe(1)
+    expect(screen.getAllByRole('option', {name: 'orbital_period'}).length).toBe(2)
     
     userEvent.click(btnFilter);
-    expect(screen.queryByRole('option', {name: 'population'})).not.toBeInTheDocument()
-    expect(screen.queryByRole('option', {name: 'orbital_period'})).not.toBeInTheDocument()
+    expect(screen.getAllByRole('option', {name: 'population'}).length).toBe(1)
+    expect(screen.getAllByRole('option', {name: 'orbital_period'}).length).toBe(1)
   });
-//   it('Verifica os valores presentes nos selects', async () => {
-//     render(<App />);
 
-//     const options = ['population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water']
-//     const selectColuna = screen.getByTestId('column-filter');
+  it('Verifica se os filtros utilizados aparecem listados na tela com um botão de excluir', async () => {
+    // estou usando os filtros population maior que 0
+    const {debug} = render(<App />);
 
- 
+    const btnFilter = screen.getByRole('button', {name: 'Filtrar'} );
 
-//    console.log(selectColuna.children)
-//    // expect(selectColuna.children)
-//   });
+    expect(screen.queryByRole('button', {name: 'X'})).not.toBeInTheDocument();
+    
+    userEvent.click(btnFilter);
+
+    expect(screen.queryByRole('button', {name: 'X'})).toBeInTheDocument();
+  });
+
+  it('Verifica se é possíel excluir um filtro selecionado anteriormente', async () => {
+    // estou usando os filtros population maior que 0
+    const {debug} = render(<App />);
+
+    const btnFilter = screen.getByRole('button', {name: 'Filtrar'} );
+
+    expect(screen.getAllByRole('option', {name: 'population'}).length).toBe(2)
+    
+    userEvent.click(btnFilter);
+       
+    expect(screen.getAllByRole('option', {name: 'population'}).length).toBe(1)
+
+    userEvent.click(screen.queryByRole('button', {name: 'X'}));
+    
+    expect(screen.getAllByRole('option', {name: 'population'}).length).toBe(2)
+
+  });
 });
