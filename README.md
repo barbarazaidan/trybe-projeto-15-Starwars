@@ -1,7 +1,7 @@
 # Projeto Starwars
 ## Este repositório contém o desenvolvimento do meu 15º projeto na Trybe
 
-A ideia do Starwars é bastante simples: criar uma aplicação para pesquisar planetas e poder fazer isso usando diferentes filtros de forma combinada. Apesar de algo trivial, este foi um projeto extremamente desafiador. Junto com o Trybetunes, foram os dois mais difíceis de Frontend. Para o desenvolvimento, trabalhei usando Context API e React Hooks.
+A ideia do Starwars é bastante simples: criar uma aplicação para pesquisar planetas e poder fazer isso usando diferentes filtros de forma combinada. Apesar de parecer algo trivial, este foi um projeto extremamente desafiador. Junto com o Trybetunes, foram os dois mais difíceis de Frontend. Para o desenvolvimento, trabalhei usando Context API e React Hooks.
 
 ## Detalhes do projeto
 
