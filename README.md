@@ -43,7 +43,7 @@ Confira os requisitos exigidos pela Trybe (texto extraído dos readme oficial da
 </p>
 </details>
 
-**4.   Implemente múltiplos filtros numéricos**
+**4. Implemente múltiplos filtros numéricos**
 <details><summary>Detalhes</summary>
 <p>
 
