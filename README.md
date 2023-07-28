@@ -17,6 +17,8 @@ Confira os requisitos exigidos pela Trybe (texto extraído dos readme oficial da
 </p>
 </details>
 
+---
+
 **2. Crie um filtro de texto para a tabela**
 
 <details><summary>Detalhes</summary>
@@ -26,6 +28,8 @@ Confira os requisitos exigidos pela Trybe (texto extraído dos readme oficial da
 
 </p>
 </details>
+
+---
 
 **3. Crie um filtro para valores numéricos**
 
@@ -43,6 +47,8 @@ Confira os requisitos exigidos pela Trybe (texto extraído dos readme oficial da
 </p>
 </details>
 
+---
+
 **4. Implemente múltiplos filtros numéricos**
 <details><summary>Detalhes</summary>
 <p>
@@ -52,7 +58,11 @@ Confira os requisitos exigidos pela Trybe (texto extraído dos readme oficial da
 </p>
 </details>
 
+---
+
 **5. Desenvolva testes para atingir 30% de cobertura total da aplicação**
+
+---
 
 **6. Não utilize filtros repetidos**
 
@@ -68,6 +78,8 @@ Confira os requisitos exigidos pela Trybe (texto extraído dos readme oficial da
 </p>
 </details>
 
+---
+
 **7. Apague um filtro de valor numérico ao clicar no ícone X de um dos filtros e apague todas filtragens numéricas simultaneamente ao clicar em outro botão de Remover todas filtragens**
 
 <details><summary>Detalhes</summary>
@@ -80,7 +92,11 @@ Confira os requisitos exigidos pela Trybe (texto extraído dos readme oficial da
 </p>
 </details>
 
+---
+
 **8. Desenvolva testes para atingir 60% de cobertura total da aplicação**
+
+---
 
 **9. Ordene as colunas de forma ascendente ou descendente**
 
@@ -96,9 +112,13 @@ Confira os requisitos exigidos pela Trybe (texto extraído dos readme oficial da
 </p>
 </details>
 
+---
+
 REQUISITO BÔNUS
 
 **10. Desenvolva testes para atingir 90% de cobertura total da aplicação**
+
+---
 
 ## Sobre o curso da Trybe
 O programa total de estudo conta com mais de 1.500 horas de aulas presenciais e online,divididas ao longo de 12 meses. O conteúdo aborda introdução ao desenvolvimento de software, front-end, back-end, ciência da computação, engenharia de software, metodologias ágeis e habilidades comportamentais.
